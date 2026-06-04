@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>DopamineOS — Your Brain's Command Center</title>
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,35 +13,19 @@
   --neon-lilac: #c084fc; --neon-cyan: #22d3ee; --neon-green: #4ade80;
   --neon-pink: #f472b6; --neon-yellow: #facc15; --neon-orange: #fb923c;
   --border: #1e2d4a; --text-primary: #e2e8f0; --text-muted: #64748b; --text-dim: #94a3b8;
-  --battery: 100;
 }
-html,body { background:var(--bg-deep); color:var(--text-primary); font-family:'Inter',system-ui,sans-serif; min-height:100vh; overflow-x:hidden; cursor:none; }
+html,body { background:var(--bg-deep); color:var(--text-primary); font-family:system-ui,sans-serif; min-height:100vh; overflow-x:hidden; }
 ::-webkit-scrollbar{width:4px;height:4px} ::-webkit-scrollbar-track{background:var(--bg-deep)} ::-webkit-scrollbar-thumb{background:var(--neon-lilac);border-radius:99px}
 
-/* ── CUSTOM CURSOR ── */
-#cursor-dot { position:fixed;width:8px;height:8px;border-radius:50%;background:var(--neon-cyan);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .2s; box-shadow:0 0 10px var(--neon-cyan),0 0 20px rgba(34,211,238,.5); }
-#cursor-ring { position:fixed;width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(192,132,252,.6);pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:transform .08s ease,width .2s,height .2s,opacity .2s,border-color .2s; }
-#cursor-trail-container { position:fixed;inset:0;pointer-events:none;z-index:99990; }
-.cursor-trail { position:fixed;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);transition:opacity .4s ease; }
-body.cursor-clicking #cursor-dot { width:14px;height:14px;background:var(--neon-lilac); }
-body.cursor-clicking #cursor-ring { width:20px;height:20px;border-color:var(--neon-lilac);opacity:.5; }
-body.cursor-hovering #cursor-ring { width:52px;height:52px;border-color:var(--neon-cyan);opacity:.8; }
-
 /* ── GLOW UTILS ── */
-.glow-lilac{box-shadow:0 0 20px rgba(192,132,252,.35),0 0 60px rgba(192,132,252,.1)}
-.glow-cyan{box-shadow:0 0 20px rgba(34,211,238,.35),0 0 60px rgba(34,211,238,.1)}
-.glow-green{box-shadow:0 0 20px rgba(74,222,128,.35),0 0 60px rgba(74,222,128,.1)}
-.text-glow-lilac{text-shadow:0 0 12px rgba(192,132,252,.8)}
-.text-glow-cyan{text-shadow:0 0 12px rgba(34,211,238,.8)}
-.text-glow-green{text-shadow:0 0 12px rgba(74,222,128,.8)}
-.gradient-text-lilac{background:linear-gradient(135deg,#c084fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.gradient-text-cyan{background:linear-gradient(135deg,#22d3ee,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.gradient-text-green{background:linear-gradient(135deg,#4ade80,#86efac);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.gradient-text-orange{background:linear-gradient(135deg,#fb923c,#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gradient-text-lilac{background:linear-gradient(135deg,#c084fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.gradient-text-cyan{background:linear-gradient(135deg,#22d3ee,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.gradient-text-green{background:linear-gradient(135deg,#4ade80,#86efac);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.gradient-text-orange{background:linear-gradient(135deg,#fb923c,#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
 /* ── LOGIN SCREEN ── */
 #login-screen { position:fixed;inset:0;z-index:10000;background:var(--bg-deep);display:flex;align-items:center;justify-content:center;flex-direction:column; }
-.login-card { background:var(--bg-card);border:1px solid rgba(192,132,252,.3);border-radius:24px;padding:48px 44px;width:100%;max-width:480px;box-shadow:0 0 80px rgba(192,132,252,.1),0 0 200px rgba(34,211,238,.05); }
+.login-card { background:var(--bg-card);border:1px solid rgba(192,132,252,.3);border-radius:24px;padding:48px 44px;width:100%;max-width:480px; }
 .login-particles { position:absolute;inset:0;overflow:hidden;pointer-events:none; }
 .login-particle { position:absolute;border-radius:50%;animation:floatParticle linear infinite; }
 @keyframes floatParticle { 0%{transform:translateY(100vh) scale(0);opacity:0} 10%{opacity:.6} 90%{opacity:.3} 100%{transform:translateY(-100px) scale(1);opacity:0} }
@@ -59,83 +43,56 @@ body.cursor-hovering #cursor-ring { width:52px;height:52px;border-color:var(--ne
 /* ── NAV ── */
 .nav-item { display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;cursor:pointer;transition:all .2s;color:var(--text-muted);font-size:.85rem;font-weight:500;border:1px solid transparent;white-space:nowrap; }
 .nav-item:hover { color:var(--text-primary);background:var(--bg-elevated); }
-.nav-item.active { color:var(--neon-lilac);background:rgba(192,132,252,.1);border-color:rgba(192,132,252,.3);box-shadow:0 0 16px rgba(192,132,252,.15); }
-.nav-icon { width:18px;height:18px;flex-shrink:0; }
+.nav-item.active { color:var(--neon-lilac);background:rgba(192,132,252,.1);border-color:rgba(192,132,252,.3); }
 
 /* ── CARDS ── */
-.card { background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px;transition:border-color .2s; }
-.card:hover { border-color:#2a3d5e; }
+.card { background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px; }
 .card-elevated { background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;padding:16px; }
 
 /* ── INPUTS ── */
-.input-field { background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text-primary);font-size:.9rem;width:100%;outline:none;transition:all .2s; }
+.input-field { background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text-primary);font-size:.9rem;width:100%;outline:none; }
 .input-field::placeholder { color:var(--text-muted); }
-.input-field:focus { border-color:var(--neon-lilac);box-shadow:0 0 0 3px rgba(192,132,252,.1); }
+.input-field:focus { border-color:var(--neon-lilac); }
 select.input-field { appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px; }
 select.input-field option { background:#0e1628; }
 
 /* ── BUTTONS ── */
-.btn { display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;font-size:.85rem;cursor:pointer;border:none;transition:all .2s;white-space:nowrap; }
-.btn:active { transform:scale(.97); }
-.btn-lilac { background:linear-gradient(135deg,#a855f7,#c084fc);color:white;box-shadow:0 0 16px rgba(168,85,247,.4); }
-.btn-lilac:hover { box-shadow:0 0 28px rgba(168,85,247,.7);transform:translateY(-1px); }
-.btn-cyan { background:linear-gradient(135deg,#0891b2,#22d3ee);color:#001a1f;box-shadow:0 0 16px rgba(34,211,238,.4); }
-.btn-cyan:hover { box-shadow:0 0 28px rgba(34,211,238,.7);transform:translateY(-1px); }
-.btn-green { background:linear-gradient(135deg,#16a34a,#4ade80);color:#001a0a;box-shadow:0 0 16px rgba(74,222,128,.4); }
-.btn-green:hover { box-shadow:0 0 28px rgba(74,222,128,.7);transform:translateY(-1px); }
-.btn-orange { background:linear-gradient(135deg,#ea580c,#fb923c);color:white;box-shadow:0 0 16px rgba(251,146,60,.4); }
-.btn-orange:hover { box-shadow:0 0 28px rgba(251,146,60,.7);transform:translateY(-1px); }
+.btn { display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;font-size:.85rem;cursor:pointer;border:none;white-space:nowrap; }
+.btn-lilac { background:linear-gradient(135deg,#a855f7,#c084fc);color:white; }
+.btn-cyan { background:linear-gradient(135deg,#0891b2,#22d3ee);color:#001a1f; }
+.btn-green { background:linear-gradient(135deg,#16a34a,#4ade80);color:#001a0a; }
+.btn-orange { background:linear-gradient(135deg,#ea580c,#fb923c);color:white; }
 .btn-ghost { background:transparent;border:1px solid var(--border);color:var(--text-dim); }
-.btn-ghost:hover { border-color:#3a4d6a;color:var(--text-primary);background:var(--bg-elevated); }
-.btn-danger { background:linear-gradient(135deg,#991b1b,#ef4444);color:white;box-shadow:0 0 16px rgba(239,68,68,.3); }
-.btn-danger:hover { box-shadow:0 0 28px rgba(239,68,68,.6);transform:translateY(-1px); }
-
-/* ── DOPAMINE BAR ── */
-.dopamine-bar-track { background:var(--bg-elevated);border-radius:99px;height:20px;overflow:hidden;position:relative;border:1px solid var(--border); }
-.dopamine-bar-fill { height:100%;border-radius:99px;transition:width .6s cubic-bezier(.34,1.56,.64,1);background:linear-gradient(90deg,#7c3aed,#c084fc,#22d3ee);position:relative;min-width:0; }
-.dopamine-bar-fill::after { content:'';position:absolute;right:-2px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:white;box-shadow:0 0 12px rgba(255,255,255,.9),0 0 24px rgba(192,132,252,1); }
+.btn-danger { background:linear-gradient(135deg,#991b1b,#ef4444);color:white; }
 
 /* ── TASKS ── */
-.task-item { display:flex;align-items:flex-start;gap:12px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:12px 14px;transition:all .3s; }
+.task-item { display:flex;align-items:flex-start;gap:12px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:12px 14px; }
 .task-item.completed { opacity:.4;border-color:rgba(74,222,128,.2);background:rgba(74,222,128,.04); }
-.task-item.completing { animation:taskComplete .4s ease forwards; }
-@keyframes taskComplete { 0%{transform:scale(1)} 50%{transform:scale(1.03);background:rgba(192,132,252,.15)} 100%{transform:scale(1)} }
 .task-item[data-difficulty="high"] { border-left:3px solid var(--neon-lilac); }
 .task-item[data-difficulty="low"] { border-left:3px solid var(--neon-cyan); }
 .task-item[data-difficulty="quick"] { border-left:3px solid var(--neon-green); }
 .task-item.battery-hidden { display:none !important; }
-.task-checkbox { width:20px;height:20px;border-radius:6px;cursor:pointer;border:2px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .2s; }
-.task-checkbox:hover { border-color:var(--neon-lilac); }
+.task-checkbox { width:20px;height:20px;border-radius:6px;cursor:pointer;border:2px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px; }
 .task-checkbox.checked { background:linear-gradient(135deg,#7c3aed,#c084fc);border-color:transparent; }
 .task-text { flex:1;font-size:.9rem;line-height:1.5;color:var(--text-primary);word-break:break-word; }
 .task-text.strikethrough { text-decoration:line-through;color:var(--text-muted); }
-.task-delete { background:none;border:none;color:var(--text-muted);cursor:pointer;padding:2px;border-radius:4px;flex-shrink:0;transition:color .2s;line-height:1; }
-.task-delete:hover { color:#f87171; }
-.sub-task-list { padding-left:32px;display:flex;flex-direction:column;gap:6px;margin-top:8px; }
+.task-delete { background:none;border:none;color:var(--text-muted);cursor:pointer;padding:2px;border-radius:4px;flex-shrink:0; }
 .sub-task-item { display:flex;align-items:center;gap:10px;background:rgba(192,132,252,.05);border:1px solid rgba(192,132,252,.15);border-radius:8px;padding:8px 12px;font-size:.82rem; }
-.deconstruct-btn { font-size:.7rem;padding:3px 10px;border-radius:6px;background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.3);color:var(--neon-lilac);cursor:pointer;transition:all .2s;white-space:nowrap; }
-.deconstruct-btn:hover { background:rgba(192,132,252,.2); }
+.deconstruct-btn { font-size:.7rem;padding:3px 10px;border-radius:6px;background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.3);color:var(--neon-lilac);cursor:pointer;white-space:nowrap; }
 
 /* ── HABIT GRID ── */
-.habit-cell { width:36px;height:36px;border-radius:8px;background:var(--bg-elevated);border:1px solid var(--border);cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--text-muted); }
-.habit-cell:hover { border-color:var(--neon-green); }
-.habit-cell.done { background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(34,197,94,.15));border-color:var(--neon-green);box-shadow:0 0 10px rgba(74,222,128,.2); }
+.habit-cell { width:36px;height:36px;border-radius:8px;background:var(--bg-elevated);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--text-muted); }
+.habit-cell.done { background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(34,197,94,.15));border-color:var(--neon-green); }
 
 /* ── POMODORO ── */
-.timer-display { font-size:5rem;font-weight:800;letter-spacing:-3px;font-variant-numeric:tabular-nums;line-height:1; }
+.timer-display { font-size:5rem;font-weight:800;letter-spacing:-3px;line-height:1; }
 .focus-pulse { animation:focusPulse 3s ease-in-out infinite; }
-@keyframes focusPulse { 0%,100%{box-shadow:0 0 30px rgba(34,211,238,.08),0 0 80px rgba(34,211,238,.04)} 50%{box-shadow:0 0 60px rgba(34,211,238,.25),0 0 120px rgba(34,211,238,.1)} }
-.pomodoro-btn { padding:8px 20px;border-radius:99px;font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text-dim);transition:all .2s; }
-.pomodoro-btn:hover { border-color:var(--neon-cyan);color:var(--neon-cyan); }
-.pomodoro-btn.active-preset { background:rgba(34,211,238,.12);border-color:var(--neon-cyan);color:var(--neon-cyan);box-shadow:0 0 12px rgba(34,211,238,.2); }
-
-/* ── STREAK ── */
-.streak-fire { animation:fireFlicker 1.5s ease-in-out infinite; }
-@keyframes fireFlicker { 0%,100%{filter:drop-shadow(0 0 6px rgba(251,146,60,.8));transform:scale(1)} 50%{filter:drop-shadow(0 0 14px rgba(251,146,60,1));transform:scale(1.08)} }
+@keyframes focusPulse { 0%,100%{box-shadow:0 0 30px rgba(34,211,238,.08)} 50%{box-shadow:0 0 60px rgba(34,211,238,.25)} }
+.pomodoro-btn { padding:8px 20px;border-radius:99px;font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text-dim); }
+.pomodoro-btn.active-preset { background:rgba(34,211,238,.12);border-color:var(--neon-cyan);color:var(--neon-cyan); }
 
 /* ── TIMETABLE ── */
-.tt-slot { border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:.78rem;cursor:pointer;transition:all .2s;min-height:44px;position:relative; }
-.tt-slot:hover { border-color:rgba(192,132,252,.4);background:rgba(192,132,252,.05); }
+.tt-slot { border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:.78rem;cursor:pointer;min-height:44px;position:relative; }
 .tt-slot.has-event { background:rgba(192,132,252,.1);border-color:rgba(192,132,252,.4); }
 .tt-slot.cyan { background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.4); }
 .tt-slot.green { background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.4); }
@@ -143,114 +100,39 @@ select.input-field option { background:#0e1628; }
 .tt-slot.pink { background:rgba(244,114,182,.1);border-color:rgba(244,114,182,.4); }
 .tt-time-label { font-size:.68rem;color:var(--text-muted);width:44px;flex-shrink:0;padding-top:12px;text-align:right;padding-right:8px; }
 .tt-event-text { font-size:.78rem;font-weight:600;color:var(--text-primary); }
-.tt-delete-event { position:absolute;top:4px;right:6px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:10px;opacity:0;transition:opacity .2s; }
-.tt-slot:hover .tt-delete-event { opacity:1; }
-
-/* ── BRAIN BATTERY BAR ── */
-#brain-battery-bar { -webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;outline:none;cursor:pointer; }
-#brain-battery-bar::-webkit-slider-thumb { -webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#22d3ee);cursor:pointer;border:2px solid rgba(192,132,252,.5);box-shadow:0 0 12px rgba(192,132,252,.6); }
-#battery-indicator { transition:all .4s ease; }
-
-/* ── AMBIENT TIME ANCHOR ── */
-.time-anchor-btn { display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg-elevated);cursor:pointer;transition:all .3s; }
-.time-anchor-btn.active { border-color:var(--neon-cyan);background:rgba(34,211,238,.08);box-shadow:0 0 20px rgba(34,211,238,.15); }
-.time-anchor-pulse { width:10px;height:10px;border-radius:50%;background:var(--text-muted);transition:all .3s; }
-.time-anchor-btn.active .time-anchor-pulse { background:var(--neon-cyan);box-shadow:0 0 10px var(--neon-cyan);animation:pulseDot 2s ease-in-out infinite; }
-@keyframes pulseDot { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4)} }
+.tt-delete-event { position:absolute;top:4px;right:6px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:10px; }
 
 /* ── PANIC BUTTON ── */
 #panic-overlay { position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.97);display:none;align-items:center;justify-content:center;flex-direction:column; }
 #panic-overlay.active { display:flex; }
-.panic-countdown { font-size:5rem;font-weight:900;line-height:1;animation:panicPulse 1s ease-in-out infinite; }
-@keyframes panicPulse { 0%,100%{transform:scale(1);text-shadow:0 0 20px rgba(74,222,128,.8)} 50%{transform:scale(1.05);text-shadow:0 0 40px rgba(74,222,128,1)} }
-.panic-task-card { background:rgba(74,222,128,.08);border:2px solid var(--neon-green);border-radius:20px;padding:32px 40px;text-align:center;max-width:500px;box-shadow:0 0 60px rgba(74,222,128,.15); }
-#panic-progress-ring { transform:rotate(-90deg); }
+.panic-task-card { background:rgba(74,222,128,.08);border:2px solid var(--neon-green);border-radius:20px;padding:32px 40px;text-align:center;max-width:500px; }
 #panic-ring-fill { stroke-dasharray:314;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear; }
 
-/* ── FRICTION SLAYER ── */
+/* ── FRICTION ZONE ── */
 .friction-zone { background:rgba(192,132,252,.04);border:1px dashed rgba(192,132,252,.2);border-radius:10px;padding:12px;margin-top:6px; }
 
-/* ── XP POPUP ── */
-.xp-badge { position:fixed;top:80px;right:20px;z-index:1000;background:linear-gradient(135deg,#7c3aed,#c084fc);color:white;font-weight:800;font-size:1.1rem;padding:10px 18px;border-radius:12px;box-shadow:0 0 24px rgba(192,132,252,.6);animation:xpPop 1.5s ease forwards;pointer-events:none; }
+/* ── XP POPUPS ── */
+.xp-badge { position:fixed;top:80px;right:20px;z-index:1000;background:linear-gradient(135deg,#7c3aed,#c084fc);color:white;font-weight:800;font-size:1.1rem;padding:10px 18px;border-radius:12px;animation:xpPop 1.5s ease forwards;pointer-events:none; }
 @keyframes xpPop { 0%{opacity:0;transform:scale(.5) translateY(20px)} 30%{opacity:1;transform:scale(1.1) translateY(-10px)} 60%{transform:scale(1) translateY(-20px)} 100%{opacity:0;transform:scale(.8) translateY(-50px)} }
-.level-banner { position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:999;background:rgba(9,13,22,.96);border:2px solid var(--neon-lilac);border-radius:20px;padding:32px 48px;text-align:center;box-shadow:0 0 60px rgba(192,132,252,.5);animation:levelBanner 2.5s ease forwards;pointer-events:none; }
+.level-banner { position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:999;background:rgba(9,13,22,.96);border:2px solid var(--neon-lilac);border-radius:20px;padding:32px 48px;text-align:center;animation:levelBanner 2.5s ease forwards;pointer-events:none; }
 @keyframes levelBanner { 0%{opacity:0;transform:translate(-50%,-50%) scale(.7)} 20%{opacity:1;transform:translate(-50%,-50%) scale(1.05)} 70%{opacity:1;transform:translate(-50%,-50%) scale(1)} 100%{opacity:0;transform:translate(-50%,-50%) scale(.9)} }
-
-/* ── ENERGY ── */
-.energy-bar { background:var(--bg-elevated);border-radius:4px 4px 0 0;width:28px;transition:all .4s;position:relative;cursor:pointer; }
-input[type=range] { -webkit-appearance:none;appearance:none;height:6px;border-radius:99px;outline:none;background:var(--bg-elevated); }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#c084fc);cursor:pointer;border:2px solid rgba(192,132,252,.5);box-shadow:0 0 10px rgba(192,132,252,.5); }
-
-/* ── XP RING ── */
-.xp-level-ring { background:conic-gradient(from 0deg,#7c3aed 0%,#c084fc calc(var(--pct)*1%),var(--bg-elevated) calc(var(--pct)*1%));border-radius:50%;padding:3px; }
-
-/* ── DUMP ITEMS ── */
-.dump-item { background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.85rem;color:var(--text-dim);display:flex;justify-content:space-between;align-items:flex-start;gap:10px;transition:all .2s; }
-.dump-item:hover { border-color:rgba(192,132,252,.3);color:var(--text-primary); }
 .matrix-zone { background:var(--bg-card);border-radius:14px;padding:16px;border:1px solid var(--border);min-height:140px; }
-.matrix-task-badge { background:var(--bg-elevated);border-radius:8px;padding:10px 12px;font-size:.82rem;color:var(--text-dim);border:1px solid var(--border);display:flex;align-items:center;gap:8px; }
+.matrix-task-badge { background:var(--bg-elevated);border-radius:8px;padding:10px 12px;font-size:\.82rem;color:var(--text-dim);border:1px solid var(--border);display:flex;align-items:center;gap:8px; }
+.xp-level-ring { background:conic-gradient(from 0deg,#7c3aed 0%,#c084fc calc(var(--pct)*1%),var(--bg-elevated) calc(var(--pct)*1%));border-radius:50%;padding:3px; }
+.dump-item { background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.85rem;color:var(--text-dim);display:flex;justify-content:space-between;align-items:flex-start;gap:10px; }
 
-/* ── MOBILE ── */
 @media(max-width:768px) {
-  .nav-label{display:none} .sidebar{width:56px!important;padding:12px 8px!important} .sidebar .logo-area{display:none} .main-content{margin-left:56px!important} .nav-item{padding:10px!important;justify-content:center} .timer-display{font-size:3.5rem!important}
+  .nav-label{display:none} .sidebar{width:56px!important;padding:12px 8px!important} .sidebar .logo-area{display:none} .main-content{margin-left:56px!important;max-width:calc(100vw - 56px)!important;} .nav-item{padding:10px!important;justify-content:center} .timer-display{font-size:3.5rem!important}
 }
-
-/* ── TIMETABLE MODAL ── */
-#tt-modal { position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center; }
-#tt-modal.active { display:flex; }
-.tt-modal-card { background:var(--bg-card);border:1px solid var(--neon-lilac);border-radius:20px;padding:32px;min-width:360px;box-shadow:0 0 60px rgba(192,132,252,.2); }
 </style>
 </head>
 <body>
-
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
-<div id="cursor-trail-container"></div>
-
-<div id="panic-overlay">
-  <div class="panic-task-card">
-    <p style="font-size:.75rem;text-transform:uppercase;letter-spacing:3px;color:var(--neon-green);margin-bottom:8px;">🚨 CIRCUIT BREAKER ACTIVATED</p>
-    <h2 style="font-size:1.6rem;font-weight:900;color:white;margin-bottom:6px;" id="panic-task-title">Take 10 slow, deep breaths</h2>
-    <p id="panic-task-desc" style="font-size:.85rem;color:var(--text-dim);margin-bottom:24px;line-height:1.6;"></p>
-    <div style="position:relative;display:inline-block;margin-bottom:20px;">
-      <svg width="100" height="100" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(74,222,128,.15)" stroke-width="6"/>
-        <circle id="panic-ring-fill" cx="50" cy="50" r="45" fill="none" stroke="#4ade80" stroke-width="6" stroke-linecap="round"/>
-      </svg>
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-        <span id="panic-timer-display" class="panic-countdown gradient-text-green" style="font-size:2rem;">60</span>
-      </div>
-    </div>
-    <p style="font-size:.75rem;color:var(--text-muted);margin-bottom:20px;">Focus only on this for 60 seconds. Nothing else exists right now.</p>
-    <button class="btn btn-ghost" onclick="closePanic()" style="font-size:.8rem;">I feel better — Close</button>
-  </div>
-</div>
-
-<div id="tt-modal">
-  <div class="tt-modal-card">
-    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:20px;color:var(--neon-lilac);">Add Event</h3>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <input id="tt-event-text" class="input-field" placeholder="Event name..." />
-      <select id="tt-event-color" class="input-field">
-        <option value="">Default (Purple)</option>
-        <option value="cyan">🔵 Cyan — Focus Work</option>
-        <option value="green">🟢 Green — Health/Exercise</option>
-        <option value="orange">🟠 Orange — Social/Meetings</option>
-        <option value="pink">🔴 Pink — Creative</option>
-      </select>
-      <div style="display:flex;gap:10px;">
-        <button class="btn btn-lilac flex-1" onclick="saveTTEvent()">Save Event</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('tt-modal').classList.remove('active')">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div id="login-screen">
   <div class="login-particles" id="login-particles"></div>
   <div style="position:relative;z-index:1;width:100%;max-width:480px;padding:20px;">
     <div style="text-align:center;margin-bottom:32px;">
-      <div style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;background:linear-gradient(135deg,#7c3aed,#22d3ee);border-radius:16px;margin-bottom:16px;box-shadow:0 0 30px rgba(192,132,252,.5);">
+      <div style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;background:linear-gradient(135deg,#7c3aed,#22d3ee);border-radius:16px;margin-bottom:16px;">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       </div>
       <h1 style="font-size:2.2rem;font-weight:900;letter-spacing:-1px;" class="gradient-text-lilac">DopamineOS</h1>
@@ -258,82 +140,68 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none;width:20px;hei
     </div>
     <div class="login-card">
       <div style="display:flex;gap:6px;margin-bottom:28px;">
-        <div class="login-step-dot" id="ldot-0" style="height:3px;flex:1;border-radius:99px;background:var(--neon-lilac);transition:all .3s;"></div>
-        <div class="login-step-dot" id="ldot-1" style="height:3px;flex:1;border-radius:99px;background:var(--border);transition:all .3s;"></div>
-        <div class="login-step-dot" id="ldot-2" style="height:3px;flex:1;border-radius:99px;background:var(--border);transition:all .3s;"></div>
-        <div class="login-step-dot" id="ldot-3" style="height:3px;flex:1;border-radius:99px;background:var(--border);transition:all .3s;"></div>
+        <div class="login-step-dot" id="ldot-0" style="height:3px;flex:1;border-radius:99px;background:var(--neon-lilac);"></div>
+        <div class="login-step-dot" id="ldot-1" style="height:3px;flex:1;border-radius:99px;background:var(--border);"></div>
+        <div class="login-step-dot" id="ldot-2" style="height:3px;flex:1;border-radius:99px;background:var(--border);"></div>
+        <div class="login-step-dot" id="ldot-3" style="height:3px;flex:1;border-radius:99px;background:var(--border);"></div>
       </div>
 
       <div class="login-step active" id="lstep-0">
         <p style="font-size:.75rem;color:var(--neon-lilac);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Step 1 of 4</p>
         <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:6px;">What's your name?</h2>
-        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:20px;">We'll personalize your OS experience just for you.</p>
         <div class="login-field-group">
-          <label class="login-label">Your Name</label>
           <input id="login-name" class="input-field" type="text" placeholder="e.g. Alex" autocomplete="off" onkeydown="if(event.key==='Enter')nextLoginStep(1)"/>
         </div>
-        <button class="btn btn-lilac w-full mt-4" style="justify-content:center;margin-top:16px;" onclick="nextLoginStep(1)">Next →</button>
+        <button class="btn btn-lilac w-full mt-4 justify-center" onclick="nextLoginStep(1)">Next →</button>
       </div>
 
       <div class="login-step" id="lstep-1">
         <p style="font-size:.75rem;color:var(--neon-lilac);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Step 2 of 4</p>
         <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:6px;">What do you do?</h2>
-        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:20px;">Your profession helps us tailor your productivity matrix.</p>
         <div class="login-field-group">
-          <label class="login-label">Profession / Role</label>
           <select id="login-profession" class="input-field">
             <option value="">Select your role...</option>
             <option value="Student">🎓 Student</option>
-            <option value="Developer / Engineer">💻 Developer / Engineer</option>
-            <option value="Designer / Creative">🎨 Designer / Creative</option>
+            <option value="Developer / Engineer">💻 Developer</option>
+            <option value="Designer / Creative">🎨 Creative</option>
             <option value="Entrepreneur">🚀 Entrepreneur</option>
-            <option value="Freelancer">🌐 Freelancer</option>
-            <option value="Manager / Executive">📊 Manager / Executive</option>
-            <option value="Researcher / Academic">🔬 Researcher / Academic</option>
-            <option value="Healthcare">🏥 Healthcare</option>
             <option value="Other">⚡ Other</option>
           </select>
         </div>
         <div style="display:flex;gap:10px;margin-top:16px;">
           <button class="btn btn-ghost" onclick="nextLoginStep(0)">← Back</button>
-          <button class="btn btn-lilac flex-1" style="justify-content:center;" onclick="nextLoginStep(2)">Next →</button>
+          <button class="btn btn-lilac flex-1 justify-center" onclick="nextLoginStep(2)">Next →</button>
         </div>
       </div>
 
       <div class="login-step" id="lstep-2">
         <p style="font-size:.75rem;color:var(--neon-lilac);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Step 3 of 4</p>
         <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:6px;">How old are you?</h2>
-        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:20px;">Your age calibrates the right dopamine strategies for you.</p>
         <div class="login-field-group">
-          <label class="login-label">Age</label>
-          <input id="login-age" class="input-field" type="number" placeholder="e.g. 24" min="10" max="99" onkeydown="if(event.key==='Enter')nextLoginStep(3)"/>
+          <input id="login-age" class="input-field" type="number" placeholder="e.g. 24" onkeydown="if(event.key==='Enter')nextLoginStep(3)"/>
         </div>
         <div style="display:flex;gap:10px;margin-top:16px;">
           <button class="btn btn-ghost" onclick="nextLoginStep(1)">← Back</button>
-          <button class="btn btn-lilac flex-1" style="justify-content:center;" onclick="nextLoginStep(3)">Next →</button>
+          <button class="btn btn-lilac flex-1 justify-center" onclick="nextLoginStep(3)">Next →</button>
         </div>
       </div>
 
       <div class="login-step" id="lstep-3">
         <p style="font-size:.75rem;color:var(--neon-lilac);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Step 4 of 4</p>
         <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:6px;">Your #1 goal right now?</h2>
-        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:20px;">This becomes your north star — visible on every tab.</p>
         <div class="login-field-group">
-          <label class="login-label">Goal</label>
-          <input id="login-goal" class="input-field" type="text" placeholder="e.g. Finish my thesis by June..." onkeydown="if(event.key==='Enter')launchApp()"/>
+          <input id="login-goal" class="input-field" type="text" placeholder="e.g. Finish my thesis..." onkeydown="if(event.key==='Enter')launchApp()"/>
         </div>
-        <button class="btn btn-green w-full" style="justify-content:center;margin-top:16px;padding:14px;" onclick="launchApp()">
-          🚀 Launch My DopamineOS
-        </button>
+        <button class="btn btn-green w-full justify-center mt-4" onclick="launchApp()">🚀 Launch My DopamineOS</button>
       </div>
     </div>
   </div>
 </div>
 
-<aside class="sidebar" id="main-sidebar" style="display:none;position:fixed;left:0;top:0;height:100%;z-index:50;width:220px;background:var(--bg-card);border-right:1px solid var(--border);padding:20px 12px;display:none;flex-direction:column;">
+<aside class="sidebar" id="main-sidebar" style="display:none;position:fixed;left:0;top:0;height:100%;z-index:50;width:220px;background:var(--bg-card);border-right:1px solid var(--border);padding:20px 12px;flex-direction:column;">
   <div class="logo-area" style="margin-bottom:16px;padding:0 4px;">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-      <div style="width:32px;height:32px;background:linear-gradient(135deg,#7c3aed,#22d3ee);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(192,132,252,.4);">
+      <div style="width:32px;height:32px;background:linear-gradient(135deg,#7c3aed,#22d3ee);border-radius:8px;display:flex;align-items:center;justify-content:center;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       </div>
       <span style="font-size:1.1rem;font-weight:800;" class="gradient-text-lilac">DopamineOS</span>
@@ -344,4 +212,718 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none;width:20px;hei
   <div style="padding:10px 4px 14px;border-bottom:1px solid var(--border);margin-bottom:12px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
       <span style="font-size:.68rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;">🔋 Brain Battery</span>
-      <span id="battery-pct-
+      <span id="battery-pct-label" style="font-size:.7rem;font-weight:800;color:var(--neon-cyan);">100%</span>
+    </div>
+    <input type="range" id="brain-battery-bar" min="10" max="100" value="100" step="10" style="width:100%;height:6px;" oninput="updateBrainBattery(this.value)"/>
+    <p id="battery-mode-label" style="font-size:.65rem;color:var(--text-muted);margin-top:4px;text-align:center;">⚡ Full Power Mode</p>
+  </div>
+
+  <nav style="flex:1;display:flex;flex-direction:column;gap:2px;">
+    <div class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')"><span class="nav-label">Dopamine Engine</span></div>
+    <div class="nav-item" data-tab="matrix" onclick="switchTab('matrix')"><span class="nav-label">Matrix Prioritizer</span></div>
+    <div class="nav-item" data-tab="timetable" onclick="switchTab('timetable')"><span class="nav-label">Time Table</span></div>
+    <div class="nav-item" data-tab="streak" onclick="switchTab('streak')"><span class="nav-label">Streak & Energy</span></div>
+    <div class="nav-item" data-tab="pomodoro" onclick="switchTab('pomodoro')"><span class="nav-label">Focus Matrix</span></div>
+    <div style="height:1px;background:var(--border);margin:8px 0;"></div>
+    <div class="time-anchor-btn" id="time-anchor-toggle" onclick="toggleTimeAnchor()">
+      <div class="time-anchor-pulse" id="time-anchor-pulse"></div>
+      <div>
+        <p style="font-size:.78rem;font-weight:700;color:var(--text-dim);" id="time-anchor-label">Time Anchor</p>
+      </div>
+    </div>
+    <button class="btn btn-danger w-full justify-center text-xs mt-2" onclick="openPanic()">🚨 Panic Button</button>
+  </nav>
+
+  <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:12px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 2px;">
+      <div id="sidebar-xp-ring" class="xp-level-ring" style="--pct:0;width:38px;height:38px;flex-shrink:0;">
+        <div style="width:100%;height:100%;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;">
+          <span id="sidebar-level" style="font-size:.75rem;font-weight:800;color:var(--neon-lilac);">1</span>
+        </div>
+      </div>
+      <div class="nav-label">
+        <p id="sidebar-xp-text" style="font-size:.73rem;font-weight:700;color:var(--neon-lilac);">0/100 XP</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<main id="main-app" class="main-content" style="display:none;margin-left:220px;min-height:100vh;padding:24px;width:100%;max-width:calc(100vw - 220px);">
+  <div id="goal-banner" style="background:rgba(124,58,237,.1);border:1px solid rgba(192,132,252,.25);border-radius:12px;padding:10px 18px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+    <span style="font-size:.78rem;color:var(--text-dim);">🎯 North Star:</span>
+    <span id="goal-banner-text" style="font-size:.82rem;font-weight:700;color:var(--neon-lilac);"></span>
+  </div>
+
+  <div id="tab-dashboard" class="tab-content active slide-in">
+    <div class="flex justify-between flex-wrap gap-4">
+      <div>
+        <h1 class="text-2xl font-bold gradient-text-lilac">Dopamine Engine 🚀</h1>
+      </div>
+      <div class="flex gap-2">
+        <div id="battery-indicator" class="bg-slate-900 border border-slate-800 p-2 rounded-xl text-center min-w-[80px]">
+          <p class="text-[10px] text-slate-500">Battery</p>
+          <p id="battery-indicator-val" class="text-lg font-bold text-cyan-400">100%</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-2 rounded-xl text-center min-w-[80px]">
+          <p class="text-[10px] text-slate-500">Done</p>
+          <p id="tasks-done-count" class="text-lg font-bold text-green-400">0</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="flex justify-between mb-2">
+        <span id="level-badge" class="bg-purple-950 px-3 py-1 rounded-full text-xs text-purple-400 font-bold">LVL 1</span>
+        <span id="xp-text" class="text-xs text-slate-500 font-bold">0 / 100 XP</span>
+      </div>
+      <div class="w-full bg-slate-900 rounded-full h-4 overflow-hidden border border-slate-800">
+        <div id="dopamine-fill" class="h-full bg-gradient-to-r from-purple-500 to-cyan-400 transition-all duration-500" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div class="card flex flex-col gap-3">
+        <h2 class="text-md font-bold">Brain Dump 🧠</h2>
+        <div class="flex gap-2">
+          <input id="brain-dump-input" class="input-field" placeholder="Clear your mind..." onkeydown="if(event.key==='Enter')addBrainDump()"/>
+          <button class="btn btn-lilac" onclick="addBrainDump()">+</button>
+        </div>
+        <div id="brain-dump-list" class="flex flex-col gap-2 max-h-[200px] overflow-y-auto"></div>
+        <button class="btn btn-ghost text-xs mt-auto" onclick="clearBrainDump()">Clear All</button>
+      </div>
+
+      <div class="card flex flex-col gap-3">
+        <div class="flex justify-between">
+          <h2 class="text-md font-bold">Task Slayer ⚡</h2>
+          <span id="tasks-remaining" class="text-xs text-slate-500">0 left</span>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <input id="task-input" class="input-field flex-1" placeholder="What needs slaying?" onkeydown="if(event.key==='Enter')addTask()"/>
+          <select id="task-difficulty" class="input-field w-auto">
+            <option value="high">🧠 High</option>
+            <option value="low" selected>⚡ Low</option>
+            <option value="quick">🏆 Quick</option>
+          </select>
+          <button class="btn btn-green" onclick="addTask()">+</button>
+        </div>
+        <div id="battery-filter-notice" class="hidden text-xs text-yellow-500 bg-yellow-950/30 border border-yellow-900 p-2 rounded-lg">
+          ⚡ Low battery mode: High energy tasks hidden.
+        </div>
+        <div id="task-list" class="flex flex-col gap-2 max-h-[200px] overflow-y-auto"></div>
+        <button class="btn btn-danger text-xs justify-center w-full mt-4" onclick="zeroGuiltReset()">Zero-Guilt Reset ✨</button>
+      </div>
+    </div>
+
+    <div class="card border-yellow-600/30 mt-4">
+      <h2 class="text-md font-bold mb-2">Friction Slayer ⚡</h2>
+      <div class="flex gap-2">
+        <input id="friction-input" class="input-field" placeholder="Enter a big scary task..." onkeydown="if(event.key==='Enter')deconstructTask()"/>
+        <button class="btn btn-orange" onclick="deconstructTask()">Deconstruct</button>
+      </div>
+      <div id="friction-output" class="mt-2"></div>
+    </div>
+  </div>
+
+  <div id="tab-matrix" class="tab-content slide-in">
+    <h1 class="text-xl font-bold gradient-text-cyan">Matrix Prioritizer 🎯</h1>
+    <div class="card">
+      <div class="flex gap-2 flex-wrap">
+        <input id="matrix-task-input" class="input-field flex-1" placeholder="Add prioritize task..." onkeydown="if(event.key==='Enter')addMatrixTask()"/>
+        <select id="matrix-category" class="input-field w-auto">
+          <option value="high">🧠 High Power</option>
+          <option value="low">⚡ Low Power</option>
+          <option value="quick">🏆 Quick Win</option>
+        </select>
+        <button class="btn btn-cyan" onclick="addMatrixTask()">Add</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="matrix-zone"><h3 class="font-bold text-sm text-purple-400 mb-2">High Energy 🧠</h3><div id="matrix-high" class="flex flex-col gap-2"></div></div>
+      <div class="matrix-zone"><h3 class="font-bold text-sm text-cyan-400 mb-2">Low Energy ⚡</h3><div id="matrix-low" class="flex flex-col gap-2"></div></div>
+      <div class="matrix-zone"><h3 class="font-bold text-sm text-green-400 mb-2">Quick Win 🏆</h3><div id="matrix-quick" class="flex flex-col gap-2"></div></div>
+    </div>
+  </div>
+
+  <div id="tab-timetable" class="tab-content slide-in">
+    <div class="flex justify-between items-center flex-wrap gap-2">
+      <h1 class="text-xl font-bold gradient-text-orange">Time Table 📅</h1>
+      <button class="btn btn-ghost text-xs" onclick="clearTimetable()">Clear All</button>
+    </div>
+    <div class="card overflow-x-auto w-full">
+      <div id="timetable-grid" class="min-w-[600px]"></div>
+    </div>
+    <div class="card border-orange-500/20">
+      <p class="text-sm font-bold text-orange-400 mb-2">📌 Today's Snapshot</p>
+      <div id="today-snapshot" class="flex flex-col gap-2"></div>
+    </div>
+  </div>
+
+  <div id="tab-streak" class="tab-content slide-in">
+    <h1 class="text-xl font-bold gradient-text-green">Streak & Energy 🔋</h1>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="card text-center"><p id="streak-count" class="text-2xl font-bold text-orange-500">0</p><p class="text-[10px] text-slate-500">Streak</p></div>
+      <div class="card text-center"><p id="days-checked" class="text-2xl font-bold text-cyan-400">0</p><p class="text-[10px] text-slate-500">Checks</p></div>
+      <div class="card text-center"><p id="avg-energy-display" class="text-2xl font-bold text-yellow-400">-</p><p class="text-[10px] text-slate-500">Avg Energy</p></div>
+      <div class="card text-center"><p id="best-streak-display" class="text-2xl font-bold text-pink-500">0</p><p class="text-[10px] text-slate-500">Best</p></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="card">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-sm font-bold">Habit Tracker</h2>
+          <span id="week-label" class="text-xs text-slate-500"></span>
+        </div>
+        <div id="habit-tracker-grid" class="flex flex-col gap-2 overflow-x-auto w-full"></div>
+        <div class="flex gap-2 mt-4 border-t border-slate-800 pt-3">
+          <input id="new-habit-input" class="input-field" placeholder="New habit..." onkeydown="if(event.key==='Enter')addHabit()"/>
+          <button class="btn btn-green" onclick="addHabit()">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2 class="text-sm font-bold mb-2">Energy Map ⚡</h2>
+        <div class="card-elevated border-yellow-600/20 flex flex-col gap-2">
+          <div class="flex justify-between text-xs"><span class="text-slate-500">🪫 Low</span><span id="energy-value-display" class="font-bold text-purple-400">3 / 5</span><span class="text-slate-500">High ⚡</span></div>
+          <input type="range" id="energy-slider" min="1" max="5" value="3" oninput="updateEnergySlider(this.value)"/>
+          <button class="btn btn-lilac justify-center text-xs w-full" onclick="logEnergy()">Log Energy</button>
+        </div>
+        <div id="energy-chart" class="flex items-end gap-2 h-20 border-b border-slate-800 mt-4"></div>
+        <div id="energy-chart-labels" class="flex gap-2 mt-1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-pomodoro" class="tab-content slide-in">
+    <h1 class="text-xl font-bold gradient-text-cyan">Focus Matrix ⏱️</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+      <div id="pomodoro-card" class="card flex flex-col items-center gap-4 py-8">
+        <div class="flex gap-2">
+          <button class="pomodoro-btn active-preset" onclick="setPreset(25,'focus')" id="btn-focus">25m</button>
+          <button class="pomodoro-btn" onclick="setPreset(5,'short')" id="btn-short">5m</button>
+          <button class="pomodoro-btn" onclick="setPreset(15,'long')" id="btn-long">15m</button>
+        </div>
+        <div class="text-center">
+          <p id="timer-mode-label" class="text-xs text-cyan-400 tracking-widest font-bold">FOCUS</p>
+          <h2 id="timer-display" class="timer-display gradient-text-cyan my-2">25:00</h2>
+          <p id="pomodoro-session-count" class="text-xs text-slate-500">Session #1</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost p-3" onclick="resetTimer()">Reset</button>
+          <button id="play-pause-btn" class="btn btn-cyan px-8" onclick="toggleTimer()"><span id="play-pause-label">Start</span></button>
+          <button class="btn btn-ghost p-3" onclick="skipTimer()">Skip</button>
+        </div>
+        <div id="timer-status" class="text-xs text-slate-400 text-center bg-slate-900 border border-slate-800 p-2 rounded-lg w-11/12">Ready to lock in?</div>
+      </div>
+      <div class="flex flex-col gap-3">
+        <div class="card grid grid-cols-2 gap-2 text-center">
+          <div class="card-elevated"><p id="sessions-today" class="text-xl font-bold text-cyan-400">0</p><p class="text-[10px] text-slate-500">Sessions</p></div>
+          <div class="card-elevated"><p id="focus-minutes-today" class="text-xl font-bold text-purple-400">0</p><p class="text-[10px] text-slate-500">Minutes</p></div>
+        </div>
+        <div class="card">
+          <h3 class="text-xs font-bold text-slate-400 mb-1">🎯 Focusing On:</h3>
+          <input id="focus-task-input" class="input-field" placeholder="What are you working on?" oninput="saveFocusTask()"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const HOURS = ['6 AM','7 AM','8 AM','9 AM','10 AM','11 AM','12 PM','1 PM','2 PM','3 PM','4 PM','5 PM','6 PM','7 PM','8 PM','9 PM','10 PM'];
+const HOUR_KEYS = ['06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+const XP_PER_LEVEL = 100;
+
+const DECONSTRUCT_MAP = {
+  default: [['Open a document and write the title', 'quick'], ['Set a 10m timer for outlines', 'low'], ['Identify section 1', 'high']],
+  write: [['Open document and write sentence 1', 'quick'], ['Create a 5-bullet outline', 'low'], ['Write block 1 for 15m', 'high']],
+  email: [['Open blank message and write subject', 'quick'], ['List 3 direct talking bullets', 'low'], ['Draft reply under 100 words', 'low']],
+  code: [['Write a code comment setup mapping', 'quick'], ['Define function header skeletons', 'low'], ['Draft internal primary return logic', 'high']],
+  study: [['Open reading items to page 1', 'quick'], ['Review headers for 5m text check', 'low'], ['Summarize 3 items cleanly aloud', 'high']],
+  clean: [['Set a fast 5-minute dash cleaner timer', 'quick'], ['Clear strictly trash objects out', 'low'], ['Wipe surface targets fully clean', 'low']]
+};
+
+let state = {
+  user: null, xp: 0, level: 1,
+  tasks: [], brainDumps: [], matrixTasks: [],
+  habits: [], habitData: {}, energyLog: {},
+  streak: 0, bestStreak: 0,
+  pomodoroSessions: 0, pomodoroMinutes: 0, focusTask: '',
+  timetable: {}, brainBattery: 100, timeAnchorOn: false
+};
+
+const STORAGE_KEY = "dopamineos_stable_v4.2";
+
+function save() { 
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); 
+}
+
+function load() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    if (s) {
+      const parsed = JSON.parse(s);
+      if (parsed && typeof parsed === 'object') {
+        state = { ...state, ...parsed };
+      }
+    } else {
+      state.user = null;
+    }
+  } catch(e) {
+    state.user = null;
+  }
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const el = document.getElementById('tab-' + tab);
+  if(el) el.classList.add('active');
+  const nav = document.querySelector(`[data-tab="${tab}"]`);
+  if(nav) nav.classList.add('active');
+  if (tab === 'streak') renderStreak();
+  if (tab === 'matrix') renderMatrix();
+  if (tab === 'timetable') renderTimetable();
+}
+
+function addXP(amount) {
+  const oldLvl = state.level;
+  state.xp += amount;
+  let rem = state.xp, lvl = 1;
+  while (rem >= XP_PER_LEVEL) { rem -= XP_PER_LEVEL; lvl++; }
+  state.level = lvl;
+  const pct = Math.min((rem / XP_PER_LEVEL) * 100, 100);
+  updateXPUI(lvl, rem, pct);
+  showXPBadge('+' + amount + ' XP');
+  if (state.level > oldLvl) { showLevelBanner(state.level); }
+  save();
+}
+
+function updateXPUI(lvl, rem, pct) {
+  const fill = document.getElementById('dopamine-fill');
+  if (fill) fill.style.width = pct + '%';
+  const xt = document.getElementById('xp-text');
+  if (xt) xt.textContent = rem + ' / ' + XP_PER_LEVEL + ' XP';
+  const lb = document.getElementById('level-badge');
+  if (lb) lb.textContent = 'LVL ' + lvl;
+  const td = document.getElementById('total-xp-display');
+  if (td) td.textContent = state.xp;
+  const sl = document.getElementById('sidebar-level');
+  if (sl) sl.textContent = lvl;
+  const st = document.getElementById('sidebar-xp-text');
+  if (st) st.textContent = rem + '/' + XP_PER_LEVEL + ' XP';
+  const sr = document.getElementById('sidebar-xp-ring');
+  if (sr) sr.style.setProperty('--pct', pct);
+}
+
+function refreshXPDisplay() {
+  let rem = state.xp, lvl = 1;
+  while (rem >= XP_PER_LEVEL) { rem -= XP_PER_LEVEL; lvl++; }
+  state.level = lvl;
+  updateXPUI(lvl, rem, Math.min((rem / XP_PER_LEVEL) * 100, 100));
+}
+
+function showXPBadge(text) {
+  const el = document.createElement('div');
+  el.className = 'xp-badge'; el.textContent = text;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1600);
+}
+
+function showLevelBanner(lvl) {
+  const el = document.createElement('div');
+  el.className = 'level-banner';
+  el.innerHTML = `<p class="text-cyan-400 text-xs font-bold tracking-widest">LEVEL UP!</p><h2 class="text-2xl font-black text-purple-400">Level ${lvl}</h2>`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2600);
+}
+
+function playTone(freq, type='sine', dur=0.3, vol=0.15) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = freq; osc.type = type;
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + dur);
+  } catch(e) {}
+}
+
+function updateBrainBattery(val) {
+  val = parseInt(val);
+  state.brainBattery = val;
+  save();
+  document.getElementById('battery-pct-label').textContent = val + '%';
+  document.getElementById('battery-indicator-val').textContent = val + '%';
+  filterTasksByBattery(val);
+}
+
+function filterTasksByBattery(val) {
+  document.querySelectorAll('.task-item').forEach(item => {
+    const diff = item.dataset.difficulty;
+    if (val <= 40 && diff === 'high') item.classList.add('battery-hidden');
+    else item.classList.remove('battery-hidden');
+  });
+  const notice = document.getElementById('battery-filter-notice');
+  if (notice) notice.style.display = val <= 40 ? 'block' : 'none';
+}
+
+let timeAnchorInterval = null;
+function toggleTimeAnchor() {
+  state.timeAnchorOn = !state.timeAnchorOn;
+  save();
+  const btn = document.getElementById('time-anchor-toggle');
+  const label = document.getElementById('time-anchor-label');
+  if (state.timeAnchorOn) {
+    if(btn) btn.classList.add('active');
+    if(label) label.textContent = 'Anchor: ON';
+    timeAnchorInterval = setInterval(() => {
+      playTone(440, 'sine', 0.5, 0.1);
+      showXPBadge('⏰ Time Check!');
+    }, 15 * 60 * 1000);
+    showXPBadge('⏰ Time Anchor Activated!');
+  } else {
+    if(btn) btn.classList.remove('active');
+    if(label) label.textContent = 'Time Anchor';
+    if (timeAnchorInterval) { clearInterval(timeAnchorInterval); timeAnchorInterval = null; }
+  }
+}
+
+function openPanic() {
+  showXPBadge('🚨 Deep breath. Circuit breaker on.');
+  addXP(5);
+}
+
+function deconstructTask() {
+  const input = document.getElementById('friction-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const lower = text.toLowerCase();
+  let steps = DECONSTRUCT_MAP.default;
+  if (lower.includes('write') || lower.includes('paper')) steps = DECONSTRUCT_MAP.write;
+  else if (lower.includes('email')) steps = DECONSTRUCT_MAP.email;
+  else if (lower.includes('code')) steps = DECONSTRUCT_MAP.code;
+  else if (lower.includes('clean')) steps = DECONSTRUCT_MAP.clean;
+
+  const output = document.getElementById('friction-output');
+  output.innerHTML = `
+    <div class="friction-zone">
+      <p class="text-xs text-orange-400 font-bold mb-2">🔬 Steps for: ${escHtml(text)}</p>
+      <div class="flex flex-col gap-2">
+        ${steps.map((s, i) => `
+          <div class="sub-task-item bg-slate-900/60 p-2 rounded-lg border border-purple-900/30">
+            <span class="text-xs text-slate-300">${escHtml(s[0])}</span>
+          </div>
+        `).join('')}
+      </div>
+      <button class="btn btn-ghost text-xs mt-2 py-1" onclick='addAllFrictionToTasks(${JSON.stringify(steps)})'>+ Track All Steps</button>
+    </div>
+  `;
+  input.value = '';
+}
+
+function addAllFrictionToTasks(steps) {
+  steps.forEach(s => {
+    state.tasks.push({ id: Date.now() + Math.random(), text: s[0], done: false, difficulty: s[1] });
+  });
+  save(); renderTasks();
+  showXPBadge('Quest lines built! ⚡');
+}
+
+function addBrainDump() {
+  const input = document.getElementById('brain-dump-input');
+  const text = input.value.trim();
+  if (!text) return;
+  state.brainDumps.unshift({ id: Date.now(), text });
+  input.value = ''; save(); renderBrainDumps();
+}
+
+function deleteBrainDump(id) {
+  state.brainDumps = state.brainDumps.filter(d => d.id !== id);
+  save(); renderBrainDumps();
+}
+
+function clearBrainDump() {
+  state.brainDumps = []; save(); renderBrainDumps();
+}
+
+function renderBrainDumps() {
+  const list = document.getElementById('brain-dump-list');
+  if (!list) return;
+  if (!state.brainDumps.length) {
+    list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">Mind is clear ✨</p>`;
+    return;
+  }
+  list.innerHTML = state.brainDumps.map(d => `
+    <div class="dump-item bg-slate-900 p-2 rounded-lg flex justify-between items-center border border-slate-800">
+      <span class="text-xs text-slate-300">${escHtml(d.text)}</span>
+      <button class="text-red-400 text-xs" onclick="deleteBrainDump(${d.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function addTask() {
+  const input = document.getElementById('task-input');
+  const diff = document.getElementById('task-difficulty').value;
+  const text = input.value.trim();
+  if (!text) return;
+  state.tasks.push({ id: Date.now(), text, done: false, difficulty: diff });
+  input.value = ''; save(); renderTasks();
+}
+
+function toggleTask(id) {
+  const task = state.tasks.find(t => t.id === id);
+  if (!task || task.done) return;
+  task.done = true; save();
+  try { confetti({ particleCount: 40 }); } catch(e){}
+  addXP(25); renderTasks();
+}
+
+function deleteTask(id) {
+  state.tasks = state.tasks.filter(t => t.id !== id);
+  save(); renderTasks();
+}
+
+function zeroGuiltReset() {
+  localStorage.removeItem(STORAGE_KEY);
+  state = {
+    user: null, xp: 0, level: 1,
+    tasks: [], brainDumps: [], matrixTasks: [],
+    habits: [], habitData: {}, energyLog: {},
+    streak: 0, bestStreak: 0,
+    pomodoroSessions: 0, pomodoroMinutes: 0, focusTask: '',
+    timetable: {}, brainBattery: 100, timeAnchorOn: false
+  };
+  alert("✨ Board safely reset. Fresh slate with zero guilt! ✨");
+  window.location.reload();
+}
+
+function renderTasks() {
+  const list = document.getElementById('task-list');
+  if (!list) return;
+  const done = state.tasks.filter(t => t.done).length;
+  document.getElementById('tasks-done-count').textContent = done;
+  document.getElementById('tasks-remaining').textContent = (state.tasks.length - done) + ' remaining';
+  
+  if (!state.tasks.length) {
+    list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">No active threats. Slay a task! ⚔️</p>`;
+    return;
+  }
+  list.innerHTML = state.tasks.map(t => `
+    <div class="task-item ${t.done ? 'completed' : ''}" data-difficulty="${t.difficulty || 'low'}">
+      <div class="task-checkbox ${t.done ? 'checked' : ''}" onclick="toggleTask(${t.id})"></div>
+      <span class="task-text ${t.done ? 'strikethrough' : ''}">${escHtml(t.text)}</span>
+      <button class="text-red-400 text-xs ml-2" onclick="deleteTask(${t.id})">✕</button>
+    </div>
+  `).join('');
+  filterTasksByBattery(state.brainBattery);
+}
+
+function addMatrixTask() {
+  const input = document.getElementById('matrix-task-input');
+  const cat = document.getElementById('matrix-category').value;
+  const text = input.value.trim();
+  if (!text) return;
+  state.matrixTasks.push({ id: Date.now(), text, cat, done: false });
+  input.value = ''; save(); renderMatrix();
+}
+
+function toggleMatrixTask(id) {
+  const t = state.matrixTasks.find(x => x.id === id);
+  if (!t) return;
+  t.done = !t.done; save(); addXP(20); renderMatrix();
+}
+
+function deleteMatrixTask(id) {
+  state.matrixTasks = state.matrixTasks.filter(x => x.id !== id);
+  save(); renderMatrix();
+}
+
+function renderMatrix() {
+  ['high','low','quick'].forEach(cat => {
+    const zone = document.getElementById('matrix-' + cat);
+    if (!zone) return;
+    const tasks = state.matrixTasks ? state.matrixTasks.filter(t => t.cat === cat) : [];
+    if (!tasks.length) { zone.innerHTML = `<p class="text-[11px] text-slate-600 text-center py-2">Zone empty</p>`; return; }
+    zone.innerHTML = tasks.map(t => `
+      <div class="matrix-task-badge bg-slate-900 p-2 rounded-lg flex justify-between items-center border border-slate-800 text-xs">
+        <span class="${t.done ? 'line-through text-slate-600': 'text-slate-300'}" onclick="toggleMatrixTask(${t.id})">${escHtml(t.text)}</span>
+        <button class="text-red-500 text-[10px]" onclick="deleteMatrixTask(${t.id})">✕</button>
+      </div>
+    `).join('');
+  });
+}
+
+function renderTimetable() {
+  const grid = document.getElementById('timetable-grid');
+  if (!grid) return;
+  let html = `<div class="grid grid-cols-8 gap-1 mb-1 text-center font-bold text-xs text-slate-500"><div></div>${DAYS.map(d=>`<div>${d}</div>`).join('')}</div>`;
+  HOUR_KEYS.forEach((hr, hi) => {
+    html += `<div class="grid grid-cols-8 gap-1 items-center"><div class="text-[10px] text-slate-600 text-right pr-1">${HOURS[hi]}</div>`;
+    DAYS.forEach(d => {
+      const key = `${d}_${hr}`;
+      const evt = state.timetable ? state.timetable[key] : null;
+      html += `<div class="tt-slot bg-slate-900/40 rounded border border-slate-800/60 min-h-[30px] p-1 text-[10px] ${evt ? 'bg-purple-950/40 border-purple-800/40' : ''}" onclick="openTTModal('${key}')">
+        ${evt ? `<span>${escHtml(evt.text)}</span>` : ''}
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function openTTModal(key) {
+  ttPendingSlot = key;
+  const txt = prompt("Enter assignment block or quest objective:");
+  if (txt === null) return;
+  if (!state.timetable) state.timetable = {};
+  if (txt.trim() === "") { delete state.timetable[key]; }
+  else { state.timetable[key] = { text: txt, color: 'cyan' }; }
+  save(); renderTimetable();
+}
+
+function clearTimetable() { state.timetable = {}; save(); renderTimetable(); }
+
+function addHabit() {
+  const input = document.getElementById('new-habit-input');
+  const name = input.value.trim();
+  if (!name) return;
+  if (!state.habits) state.habits = [];
+  state.habits.push({ id: Date.now(), name });
+  input.value = ''; save(); renderStreak();
+}
+
+function toggleHabit(habitId, dateStr) {
+  if (!state.habitData) state.habitData = {};
+  const key = `${habitId}_${dateStr}`;
+  state.habitData[key] = !state.habitData[key];
+  save(); addXP(10); renderStreak();
+}
+
+function deleteHabit(id) {
+  state.habits = state.habits.filter(h => h.id !== id);
+  save(); renderStreak();
+}
+
+function renderStreak() {
+  const weekDates = getWeekDates();
+  const grid = document.getElementById('habit-tracker-grid');
+  if (!grid) return;
+  if (!state.habits || !state.habits.length) {
+    grid.innerHTML = `<p class="text-xs text-slate-500 text-center py-2">Add daily baseline habits below</p>`;
+    return;
+  }
+  grid.innerHTML = state.habits.map(h => `
+    <div class="flex items-center gap-2 bg-slate-900/60 p-2 rounded-lg justify-between border border-slate-800">
+      <span class="text-xs text-slate-300 w-20 truncate">${escHtml(h.name)}</span>
+      <div class="flex gap-1">
+        ${weekDates.map(d => {
+          const key = `${h.id}_${d}`;
+          const done = state.habitData && state.habitData[key];
+          return `<div class="w-5 h-5 rounded cursor-pointer border ${done ? 'bg-green-500 border-green-400':'bg-slate-800 border-slate-700'}" onclick="toggleHabit(${h.id},'${d}')"></div>`;
+        }).join('')}
+      </div>
+      <button class="text-red-400 text-xs" onclick="deleteHabit(${h.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function logEnergy() { showXPBadge('Rhythms calculated! +5 XP'); addXP(5); }
+function updateEnergySlider(val) { document.getElementById('energy-value-display').textContent = val + ' / 5'; }
+let currentLoginStep = 0;
+
+function nextLoginStep(step) {
+  if (step === 1 && !document.getElementById('login-name').value.trim()) return;
+  if (step === 2 && !document.getElementById('login-profession').value) return;
+  if (step === 3 && !document.getElementById('login-age').value) return;
+  
+  document.getElementById('lstep-' + currentLoginStep).classList.remove('active');
+  currentLoginStep = step;
+  document.getElementById('lstep-' + step).classList.add('active');
+}
+
+function launchApp() {
+  const goal = document.getElementById('login-goal').value.trim();
+  if (!goal) return;
+  state.user = {
+    name: document.getElementById('login-name').value.trim(),
+    profession: document.getElementById('login-profession').value,
+    age: document.getElementById('login-age').value,
+    goal: goal
+  };
+  save();
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('main-sidebar').style.display = 'flex';
+  document.getElementById('main-app').style.display = 'block';
+  initApp();
+}
+
+function setPreset(m, mode) {
+  document.getElementById('timer-display').textContent = `${m}:00`;
+  showXPBadge(`Switched to ${mode}`);
+}
+function resetTimer() { document.getElementById('timer-display').textContent = "25:00"; }
+function toggleTimer() { showXPBadge('Timer module linked to interface!'); }
+function skipTimer() { showXPBadge('Skipped block'); }
+function saveFocusTask() {}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let loginInterval;
+function initLoginParticles() {
+  const container = document.getElementById('login-particles');
+  if(!container) return;
+  for (let i = 0; i < 10; i++) {
+    const p = document.createElement('div');
+    p.className = 'login-particle bg-purple-500/30 w-1 h-1';
+    p.style.left = `${Math.random()*100}%`;
+    p.style.top = `${Math.random()*100}%`;
+    container.appendChild(p);
+  }
+}
+
+function initApp() {
+  if (state.user) {
+    const greet = document.getElementById('user-greeting');
+    if (greet) greet.innerHTML = `👋 <strong>${escHtml(state.user.name)}</strong><br/><span class="text-slate-500 text-[11px]">${escHtml(state.user.profession)}</span>`;
+    const gbt = document.getElementById('goal-banner-text');
+    if (gbt) gbt.textContent = state.user.goal;
+  }
+  refreshXPDisplay(); renderBrainDumps(); renderTasks();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  const el = document.getElementById('tab-' + tab);
+  if(el) el.style.display = 'flex';
+  
+  const nav = document.querySelector(`[data-tab="${tab}"]`);
+  if(nav) nav.classList.add('active');
+  
+  if (tab === 'streak') renderStreak();
+  if (tab === 'matrix') renderMatrix();
+  if (tab === 'timetable') renderTimetable();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  load();
+  initLoginParticles();
+  if (state.user && state.user.name) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-sidebar').style.display = 'flex';
+    document.getElementById('main-app').style.display = 'block';
+    initApp();
+    switchTab('dashboard');
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('main-sidebar').style.display = 'none';
+    document.getElementById('main-app').style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
